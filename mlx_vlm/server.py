@@ -28,6 +28,8 @@ from .prompt_utils import apply_chat_template
 from .utils import load
 from .version import __version__
 
+import argparse
+
 app = FastAPI(
     title="MLX-VLM Inference API",
     description="API for using Vision Language Models (VLMs) and Omni Models (Vision, Audio and Video support) with MLX.",
@@ -1110,10 +1112,21 @@ async def unload_model_endpoint():
 
 
 def main():
-
+    parser = argparse.ArgumentParser(description='MLX VLM Server')
+    parser.add_argument('--host', default='0.0.0.0', help='Host to bind to')
+    parser.add_argument('--port', type=int, default=8000, help='Port to bind to')
+    parser.add_argument('--workers', type=int, default=2, help='Number of workers')
+    parser.add_argument('--reload', action='store_true', help='Enable auto-reload')
+    
+    args = parser.parse_args()
+    
     uvicorn.run(
-        "mlx_vlm.server:app", host="0.0.0.0", port=8000, workers=4, reload=False
-    )  # reload=True for development to automatically restart on code changes.
+        "mlx_vlm.server:app", 
+        host=args.host, 
+        port=args.port, 
+        workers=args.workers, 
+        reload=args.reload
+    )
 
 
 if __name__ == "__main__":
