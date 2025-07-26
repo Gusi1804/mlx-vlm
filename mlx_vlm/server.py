@@ -1112,7 +1112,7 @@ async def unload_model_endpoint():
 def main():
 
     uvicorn.run(
-        "mlx_vlm.server:app", host="0.0.0.0", port=8000, workers=1, reload=True
+        "mlx_vlm.server:app", host="0.0.0.0", port=8000, workers=2, reload=False
     )  # reload=True for development to automatically restart on code changes.
 
 
